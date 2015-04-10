@@ -102,24 +102,61 @@ result = module_name.fun(3.14)
 To think about:
 
 * In Fortran subroutines input and output arguments can be in any order
-* In Python functions arguments are input, return values are output (convention)
+* In Python functions arguments are input, return values are output
 * Supply directives
+
+--
 
 Fixed format:
 ```fortran
-       subroutine(x, y)
-       double precision x, y
+       subroutine sub(y, x)
+       double precision y, x
 Cf2py intent(in) x
 Cf2py intent(out) y
 ...
 ```
----
+--
 
 Free format:
 ```fortran
-subroutine(x, y)
-double precision x, y
+subroutine sub(y, x)
+double precision y, x
 !f2py intent(in) x
 !f2py intent(out) y
 ...
 ```
+--
+Note that also this is transformed to a function of one argument 
+```python
+result = module_name.sub(3.14)
+```
+---
+
+### Fortran and numpy arrays
+
+* Extending the subroutine for numpy array arguments
+* The length `n` must be in the subroutine definition, but not in Python
+
+```fortran
+subroutine vectorized_sub(y, x, n)
+double precision y(n), x(n)
+!f2py intent(in) x
+!f2py intent(out) y
+integer i
+...
+do i=1, n
+    y(i) = f(x(i))
+end do
+end
+```
+--
+
+* It can now be called in Python with numpy arrays
+
+```
+x_vec = numpy.zeros(10)
+y_vec = my_module.vectorized_sub(x_vec)
+```
+--
+*Note:* the intent(out) makes the function allocate the return array
+
