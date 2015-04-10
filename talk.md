@@ -142,6 +142,7 @@ subroutine vectorized_sub(y, x, n)
 double precision y(n), x(n)
 !f2py intent(in) x
 !f2py intent(out) y
+integer n
 integer i
 ...
 do i=1, n
@@ -160,3 +161,32 @@ y_vec = my_module.vectorized_sub(x_vec)
 --
 *Note:* the intent(out) makes the function allocate the return array
 
+---
+
+
+### Using in/out intent arguments
+
+* In applications that update an existing array
+* Avoid memory leaks
+
+```fortran
+subroutine vectorized_sub_update(y, x, n)
+double precision y(n), x(n)
+integer n
+!f2py intent(in) x
+!f2py intent(in, out) y
+integer i
+...
+do i=1, n
+    y(i) = y(i) + f(x(i))
+end do
+end
+```
+--
+
+* Now two vector input arguments
+
+```python
+y_vec = mymod.vectorized_sub_update(y_vec, x_vec)
+```
+---
