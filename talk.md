@@ -2,22 +2,27 @@
 
 ## Olav Vahtras
 
-Leiden
+Leiden 2015-04-14
 
 ---
 
 layout: false
 
+## Learning goals
+
+* Convert Fortran functions and subroutines to Python modules
+
+* Conversion between NumPy and Fortran arrays
+
+---
+
 ## Interfacing Python with Fortran: `f2py`
 
 * Maybe the easiest compiled langue for interfacing
---
 
 * Distributed with the `numpy` package
---
 
 * Minimal modifications in original Fortran source
---
 
 * Gives you modules that can be imported in Python
 
@@ -26,20 +31,18 @@ layout: false
 ## When to consider f2py
 
 * Python is too slow
---
 
 * Algorithm prevents vectorization
---
 
 
-### Example 1 (daxpy)
+## Example 1 (daxpy)
 ```python
 for i in range(n):
     y[i] = y[i] + a * x[i]
 ```
---
 
-### Example 2 (recursion)
+
+## Example 2 (recursion)
 ```
 for i in range(n):
     y[i+1] = a*y[i] + b*y[i-1]
