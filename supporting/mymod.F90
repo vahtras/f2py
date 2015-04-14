@@ -18,3 +18,14 @@ do i=1, n
     cos_x(i) = cos(x(i))
 end do
 end
+
+subroutine vectorized_sub_update(y, x, n)
+double precision y(n), x(n)
+integer n
+!f2py intent(in) x
+!f2py intent(in, out) y
+integer i
+do i=1, n
+    y(i) = y(i) + cos(x(i))
+end do
+end
